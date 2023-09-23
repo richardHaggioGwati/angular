@@ -1,19 +1,40 @@
-export class AuthGuardService {
-  loggedIn = false;
+import {CanActivateFn, Router} from "@angular/router";
+import {AuthService} from "./auth.service";
+import {inject} from "@angular/core";
 
-  isAuthenticate() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.loggedIn)
-      }, 800)
-    })
-  }
+export const AuthGuard: CanActivateFn = async (route, state) => {
 
-  login() {
-    this.loggedIn = true;
-  }
+  const router = inject(Router)
+  const service = inject(AuthService)
+  const authenticated = await service.isAuthenticate()
 
-  logout() {
-    this.loggedIn = false
+  if (!authenticated) {
+    await router.navigate(['/servers'])
+    return false
   }
+  return true
 }
+
+
+/*
+* Older method Deprecated since angular 15
+*
+* @Injectable()
+* export class AuthGuard implements CanActivate {
+*   constructor(private authService: AuthService, private router: Router) {}
+*
+*   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+*     return this.authService.isAuthenticated()
+*         .then(
+*           (authenticated: boolean) => {
+*             if (authenticated) {
+*                 return false;
+*               } else {
+*                 this.router.navigate(['/servers'])
+*               }
+*           }
+*       )
+*   }
+* }
+*
+* */
