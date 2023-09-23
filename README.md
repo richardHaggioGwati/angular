@@ -120,4 +120,4 @@ Learn about [Testing in Angular](https://angular.io/guide/testing-components-bas
 - [Angular University](https://angular-university.io/): A great resource for in-depth Angular tutorials and courses.
 
 Happy learning! Angular is a powerful framework, and with practice, you'll become proficient in building modern web
-applications.
+applications. 🚀 
