@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { ServersService } from '../servers.service';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ServersService} from '../servers.service';
+import {ActivatedRoute, Data, Router} from "@angular/router";
 
 @Component({
   selector: 'app-server',
@@ -9,18 +9,24 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./server.component.css']
 })
 export class ServerComponent implements OnInit {
-  server: {id: number, name: string, status: string} | any;
+  server: { id: number, name: string, status: string } | any;
 
-  constructor(private serversService: ServersService, private route: ActivatedRoute, private router: Router) { }
-
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      console.log(params['id'], 'Params')
-        this.server = this.serversService.getServer(Number(params['id']));
-    })
+  constructor(private serversService: ServersService, private route: ActivatedRoute, private router: Router) {
   }
 
-  onEditServer()  {
-  this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'})
-}
+  ngOnInit() {
+    this.route.data.subscribe(
+      (data: Data) => {
+        this.server = data['server']
+      }
+    )
+    // this.route.params.subscribe((params) => {
+    //   console.log(params['id'], 'Params')
+    //     this.server = this.serversService.getServer(Number(params['id']));
+    // })
+  }
+
+  onEditServer() {
+    this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'})
+  }
 }
